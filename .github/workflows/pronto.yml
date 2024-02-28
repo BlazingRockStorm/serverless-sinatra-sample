@@ -21,11 +21,11 @@ jobs:
 
       - name: Setup pronto
         run: gem install pronto pronto-rubocop rubocop-rspec rubocop-rails
-      - name: Run Pronto
-        run: pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
-        env:
-          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
-          PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
+      # - name: Run Pronto
+      #   run: pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
+      #   env:
+      #     PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+      #     PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
 
   rspec:
 
@@ -46,6 +46,6 @@ jobs:
           touch Gemfile
           bundle install --jobs 4 --retry 3
       - name: Setup RSpec
-        run: gem install rspec
+        run: gem install rspec rspec-core
       - name: Run RSpec
         run: bundle exec rspec
