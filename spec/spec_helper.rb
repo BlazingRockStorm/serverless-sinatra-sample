@@ -1,4 +1,6 @@
-require_relative '../app/server.rb'
+# frozen_string_literal: true
+
+require_relative '../app/server'
 require 'rack/test'
 
 set :environment, :test
@@ -10,8 +12,7 @@ def app
   Sinatra::Application
 end
 
-def stub_client
-end
+def stub_client; end
 
 def json_result
   JSON.parse(last_response.body)

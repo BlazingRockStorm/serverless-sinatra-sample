@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # MIT No Attribution
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy of this
@@ -22,14 +24,13 @@ require 'base64'
 $app ||= Rack::Builder.parse_file("#{__dir__}/app/config.ru").first
 ENV['RACK_ENV'] ||= 'production'
 
-
 def handler(event:, context:)
   # Check if the body is base64 encoded. If it is, try to decode it
   body = if event['isBase64Encoded']
-    Base64.decode64 event['body']
-  else
-    event['body']
-  end || ''
+           Base64.decode64 event['body']
+         else
+           event['body']
+         end || ''
 
   # Rack expects the querystring in plain text, not a hash
   headers = event.fetch 'headers', {}
@@ -39,14 +40,14 @@ def handler(event:, context:)
     'REQUEST_METHOD' => event.fetch('httpMethod'),
     'SCRIPT_NAME' => '',
     'PATH_INFO' => event.fetch('path', ''),
-    'QUERY_STRING' => (event['queryStringParameters'] || {}).map { |k,v| "#{k}=#{v}" }.join('&'),
+    'QUERY_STRING' => (event['queryStringParameters'] || {}).map { |k, v| "#{k}=#{v}" }.join('&'),
     'SERVER_NAME' => headers.fetch('Host', 'localhost'),
     'SERVER_PORT' => headers.fetch('X-Forwarded-Port', 443).to_s,
 
     'rack.version' => Rack::VERSION,
     'rack.url_scheme' => headers.fetch('CloudFront-Forwarded-Proto') { headers.fetch('X-Forwarded-Proto', 'https') },
     'rack.input' => StringIO.new(body),
-    'rack.errors' => $stderr,
+    'rack.errors' => $stderr
   }
 
   # Pass request headers to Rack if they are available
@@ -55,11 +56,11 @@ def handler(event:, context:)
     # Content-Type and Content-Length are handled specially per the Rack SPEC linked above.
     name = key.upcase.gsub '-', '_'
     header = case name
-      when 'CONTENT_TYPE', 'CONTENT_LENGTH'
-        name
-      else
-        "HTTP_#{name}"
-    end
+             when 'CONTENT_TYPE', 'CONTENT_LENGTH'
+               name
+             else
+               "HTTP_#{name}"
+             end
     env[header] = value.to_s
   end
 
@@ -68,7 +69,7 @@ def handler(event:, context:)
     status, headers, body = $app.call env
 
     # body is an array. We combine all the items to a single string
-    body_content = ""
+    body_content = ''
     body.each do |item|
       body_content += item.to_s
     end
@@ -80,15 +81,15 @@ def handler(event:, context:)
       'headers' => headers,
       'body' => body_content
     }
-    if event['requestContext'].has_key?('elb')
+    if event['requestContext'].key?('elb')
       # Required if we use Application Load Balancer instead of API Gateway
       response['isBase64Encoded'] = false
     end
-  rescue Exception => exception
+  rescue Exception => e
     # If there is _any_ exception, we return a 500 error with an error message
     response = {
       'statusCode' => 500,
-      'body' => exception.message
+      'body' => e.message
     }
   end
 
