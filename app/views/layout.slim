@@ -4,13 +4,4 @@ html
     title
       | Serverless Sinatra
   body
-    / = yield
-    h1
-      div
-        = ['Hello', 'Hi', 'Hey', 'Yo'][rand(4)]
-        |  World!
-      div
-        = ['Hello', 'Hi', 'Hey', 'Yo'][rand(4)]
-        |  World!
-    div
-      | - from SINATRA on AWS Lambda
+    == yield
