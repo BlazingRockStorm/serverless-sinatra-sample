@@ -42,7 +42,8 @@ jobs:
           RAILS_ENV: test
         run: |
           gem install bundler
-          bundle install --jobs 4 --retry 3 --path vendor/bundle
+          bundle config set path 'vendor/bundle'
+          bundle install --jobs 4 --retry 3
       - name: Setup RSpec
         run: gem install rspec
       - name: Run RSpec
