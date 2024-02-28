@@ -43,6 +43,7 @@ jobs:
         run: |
           gem install bundler
           bundle config set path 'vendor/bundle'
+          touch Gemfile
           bundle install --jobs 4 --retry 3
       - name: Setup RSpec
         run: gem install rspec
