@@ -27,18 +27,23 @@ jobs:
           PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
           PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
 
-  # rspec:
+  rspec:
 
-  #   runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Setup Ruby
-  #       uses: ruby/setup-ruby@v1
-  #       with:
-  #         ruby-version: '3.1.2'
-  #         bundler-cache: true
-
-  #     - name: Setup RSpec
-  #       run: gem install rspec
-  #     - name: Run RSpec
-  #       run: bundle exec rspec
+    steps:
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.1.2'
+          bundler-cache: true
+      - name: Bundle install
+        env:
+          RAILS_ENV: test
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3 --path vendor/bundle
+      - name: Setup RSpec
+        run: gem install rspec
+      - name: Run RSpec
+        run: bundle exec rspec
