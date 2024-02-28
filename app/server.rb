@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'slim'
 require 'aws-record'
 
 before do
@@ -13,7 +14,7 @@ end
 # For the index page
 ##################################
 get '/' do
-  erb :index
+  slim :index
 end
 
 ##################################
@@ -44,7 +45,7 @@ class FeedbackServerlessSinatraTable
 end
 
 get '/feedback' do
-  erb :feedback
+  slim :feedback
 end
 
 get '/api/feedback' do

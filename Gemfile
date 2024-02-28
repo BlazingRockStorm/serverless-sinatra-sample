@@ -2,11 +2,13 @@ source 'http://rubygems.org'
 
 gem 'sinatra'
 gem 'json'
-gem 'rack'
-gem 'rack-contrib'
+gem 'racker'
 gem 'aws-record'
 gem 'rake'
 gem 'rubysl-base64'
+# Use Slim
+gem 'html2slim'
+gem 'slim-rails'
 
 # These are the dependencies that are used only for unit tests.
 group :test do
