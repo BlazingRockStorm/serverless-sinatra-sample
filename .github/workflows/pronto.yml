@@ -37,13 +37,13 @@ jobs:
         with:
           ruby-version: '3.1.2'
           bundler-cache: true
-      - name: Bundle install
-        env:
-          RAILS_ENV: test
-        run: |
-          gem install bundler
-          bundle install
-      # - name: Setup RSpec
-      #   run: gem install rspec rspec-core
+      # - name: Bundle install
+      #   env:
+      #     RAILS_ENV: test
+      #   run: |
+      #     gem install bundler
+      #     bundle install
+      # # - name: Setup RSpec
+      # #   run: gem install rspec rspec-core
       - name: Run RSpec
         run: bundle exec rspec
