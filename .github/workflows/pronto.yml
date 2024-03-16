@@ -39,3 +39,8 @@ jobs:
           bundler-cache: true
       - name: Run RSpec
         run: bundle exec rspec
+
+      - name: Generate test result
+        uses: joshmfrankel/simplecov-check-action@main
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
