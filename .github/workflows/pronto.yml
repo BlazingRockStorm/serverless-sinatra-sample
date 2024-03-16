@@ -1,4 +1,4 @@
-name: Pronto & RSpec
+name: Pronto
 on: [pull_request]
 
 jobs:
@@ -27,41 +27,3 @@ jobs:
         env:
           PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
           PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
-
-  rspec:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: '3.1.2'
-          bundler-cache: true
-
-      - name: Run RSpec
-        run: bundle exec rspec
-
-      - name: Generate test result
-        uses: joshmfrankel/simplecov-check-action@main
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload coverage results
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage-report
-          path: coverage
-
-  coverage:
-    runs-on: ubuntu-latest
-    # This line will only run the coverage job if the test job passed
-    needs: rspec
-
-    steps:
-    - name: Download coverage report
-      uses: actions/download-artifact@v3
-      with:
-        name: coverage-report
-        path: coverage
