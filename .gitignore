@@ -1,6 +1,7 @@
 .ruby-gemset
 .ruby-version
 .DS_Store
+samconfig.toml
 tmp/*
 !tmp/.keep
 coverage
