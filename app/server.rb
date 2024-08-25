@@ -2,7 +2,7 @@ require 'sinatra'
 require 'aws-record'
 
 before do
-  if (request.body && request.body.read.empty? && request.body.size > 0)
+  if request.body && request.body.read.empty? && request.body.size.positive?
     request.body.rewind
     @params = Sinatra::IndifferentHash.new
     @params.merge!(JSON.parse(request.body.read))
@@ -21,12 +21,12 @@ end
 ##################################
 get '/hello-world' do
   content_type :json
-  { :Output => 'Hello World!' }.to_json
+  { Output: 'Hello World!' }.to_json
 end
 
 post '/hello-world' do
-    content_type :json
-    { :Output => 'Hello World!' }.to_json
+  content_type :json
+  { Output: 'Hello World!' }.to_json
 end
 
 ##################################
@@ -49,11 +49,11 @@ end
 
 get '/api/feedback' do
   content_type :json
-  items = FeedbackServerlessSinatraTable.scan()
-  items
-    .map { |r| { :ts => r.ts, :name => r.name, :feedback => r.feedback } }
-    .sort { |a, b| a[:ts] <=> b[:ts] }
-    .to_json
+  items = FeedbackServerlessSinatraTable.scan
+  items.
+    map { |r| { ts: r.ts, name: r.name, feedback: r.feedback } }.
+    sort { |a, b| a[:ts] <=> b[:ts] }.
+    to_json
 end
 
 post '/api/feedback' do

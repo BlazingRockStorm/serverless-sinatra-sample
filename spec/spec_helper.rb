@@ -1,10 +1,10 @@
-require_relative '../app/server.rb'
+require_relative '../app/server'
 require 'rack/test'
 
 set :environment, :test
 
 RSpec.configure do |config|
-  config.before(:each) do
+  config.before do
     FeedbackServerlessSinatraTable.configure_client(client: stub_client)
   end
 end
@@ -14,9 +14,7 @@ def app
 end
 
 def stub_client
-  @stub_client ||= begin
-    Aws::DynamoDB::Client.new(stub_responses: true) # don't send real calls to DynamoDB in test env
-  end
+  @stub_client ||= Aws::DynamoDB::Client.new(stub_responses: true) # don't send real calls to DynamoDB in test env
 end
 
 # We could use native RSpec `post '/endpoint', param1: 'foo', param2: 'bar'
@@ -27,7 +25,7 @@ def api_gateway_post(path, params)
   api_gateway_body_fwd = params.to_json
   rack_input = StringIO.new(api_gateway_body_fwd)
 
-  post path, real_params = {}, {"rack.input" => rack_input}
+  post path, {}, { 'rack.input' => rack_input }
 end
 
 def json_result

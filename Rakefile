@@ -4,4 +4,4 @@ RSpec::Core::RakeTask.new :specs do |task|
   task.pattern = Dir['spec/**/*_spec.rb']
 end
 
-task :default => ['specs']
+task default: ['specs']
